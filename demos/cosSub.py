@@ -15,7 +15,6 @@ from SNoIn.TangentMethod import *
 import time
 time_start = time.time()
 
-# spline.project
 # Use TSFC representation, due to complicated forms:
 parameters["form_compiler"]["representation"] = "tsfc"
 import sys
