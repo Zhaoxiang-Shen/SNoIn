@@ -43,10 +43,17 @@ def I_3D_sub(h,rho,eps,sigma):
 
 # LJ energy density of a monolayer MoS2.
 # Summing the contribution from all different atom pairs, i.e. Mo-Si/N, S-Si/N.
-# For a MoS2 molecule, only the vertical distance between Mo and S atoms is considered.
-def I_MoS2_Si3N4(d_Mo):
-    d_S1 = d_Mo + d_S1_Mo
-    d_S2 = d_Mo + d_S2_Mo
+def I_MoS2_Si3N4(d_Mo, n_a2=1):
+    """
+    For a MoS2 molecule, “d_S == d_Mo + d_S_Mo * n_a2”,
+    where n_a2 == abs(unit(inner(n,a2))),
+    “n” is the normal vector of the tangent plane, "a2” is the normal vector at "x"
+    (In the demos, "n_a2=1" can produce results with no apparent difference).
+    """
+    shift_S1_Mo = d_S1_Mo * n_a2
+    shift_S2_Mo = d_S2_Mo * n_a2
+    d_S1 = d_Mo + shift_S1_Mo
+    d_S2 = d_Mo + shift_S2_Mo
     I_sum = rho_Mo * (I_3D_sub(d_Mo,rho_N,eps_Mo_N,sigma_Mo_N) + I_3D_sub(d_Mo,rho_Si,eps_Mo_Si,sigma_Mo_Si)) + \
             rho_S * (I_3D_sub(d_S1,rho_N,eps_S_N,sigma_S_N) + I_3D_sub(d_S1,rho_Si,eps_S_Si,sigma_S_Si) + \
                       I_3D_sub(d_S2,rho_N,eps_S_N,sigma_S_N) + I_3D_sub(d_S2,rho_Si,eps_S_Si,sigma_S_Si))
