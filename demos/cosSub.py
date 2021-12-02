@@ -77,7 +77,7 @@ kvecs_periodic = [list(ikNURBS.knots[0])[p:-p],
 
 controlMesh = NURBSControlMesh("out.dat", useRect=True,overRefine=0)
 field = BSpline(degs, kvecs_periodic)
-splineGenerator = FieldListSpline(splineMesh, 3*[field,])
+splineGenerator = FieldListSpline(controlMesh, 3*[field,])
 
 ####### Analysis #######
 QUAD_DEG = 2*p
@@ -108,25 +108,25 @@ x = X + y
 # SW: a: 0.4014012/24.13545e1, b: 0.4098362/22.67569e1
 
 # Shell thickness:
-Constant_choice = 0  # D=(8.75(SW),17.467(REBO))eV
-h_th_list = [0.4014012, 0.4671307]  # nm
-h_th = Constant(h_th_list[Constant_choice])
+Et_choice = [0,0]  # D=(8.75(SW),17.467(REBO))eV
+h_th_list = [[0.4014012,0.4098362], [0.4671307,0.4854564]]  # nm
+h_th = Constant(h_th_list[Et_choice[0]][Et_choice[1]])
 
 # The Young's modulus and Poisson ratio:
-E_list = [24.13545e1, 30.0058e1]
-E = Constant(E_list[Constant_choice])   # (kg/(nm*s^2))
-if Constant_choice == 0:
-    nu = Constant(0.2686)
-elif Constant_choice == 1:
-    nu = Constant(0.2962)
+E_list = [[24.13545e1,22.67569e1], [30.0058e1,26.77892e1]]
+nu_list = [0.2686,0.2962]
+E = Constant(E_list[Et_choice[0]][Et_choice[1]])  # (kg/(nm*s^2))
+nu = Constant(nu_list[Et_choice[0]])
 
 # Elastic energy:
 energy_E = surfaceEnergyDensitySVK(spline,X,x,E,nu,h_th)*spline.dx
 
-# Total energy with analytical I (semi-infinite with no hole):
-d_Mo = d_tangent_plane(spline_sub, U_sub, x[2], y[0], y[1], shift_sub)
-energy_LJ = I_MoS2_Si3N4(d_Mo) * spline.dx
-##
+# LJ potential with analytical I (semi-infinite with no hole):
+_, _, a2, _, _, _ = surfaceGeometry(spline, x)  # a2 is the normal vector of shell
+d_Mo, n_a2 = d_tangent_plane(spline_sub, U_sub, x[2], y[0], y[1], shift_sub, a2)
+energy_LJ = I_MoS2_Si3N4(d_Mo, n_a2) * spline.dx
+
+# Total energy:
 energy = energy_E + energy_LJ
 R = derivative(energy,y_hom)
 J = derivative(R,y_hom)
@@ -164,5 +164,5 @@ for i in range(0, nsd + 1):
 
 ev2kgm2 = 1.60218e-19
 ev2kgnm2 = ev2kgm2*1e18
-print('L =', float(L), ', Nel =', Nel, ', Elastic Constant =', Constant_choice,'D =', float(1e-18*E*h_th**3/(12*(1-nu**2))/ev2kgm2))
+print('L =', float(L), ', Nel =', Nel, ', Elastic Constant =', Et_choice,'D =', float(1e-18*E*h_th**3/(12*(1-nu**2))/ev2kgm2))
 print('A =', float(A_sub), ', r_nonzero =', float(R_sub))
