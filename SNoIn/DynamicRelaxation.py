@@ -24,10 +24,6 @@ def DynamicRelaxationSolve(spline, R, J, u, DENS, damp, max_count=3, tol=1e-3):
     DELTA_T = Constant(1)
     timeInt = BackwardEulerIntegrator(DELTA_T, u,
                                       (u_old, udot_old))
-    # Update DELTA_T
-    def updateDt(ratio):
-        timeInt.DELTA_T.assign(timeInt.DELTA_T * ratio)
-        timeInt.DELTA_T_reciprocal.assign(1 / (timeInt.DELTA_T * ratio))
 
     # Inertial contribution to the residual:
     z_hom = TestFunction(spline.V)
@@ -59,7 +55,7 @@ def DynamicRelaxationSolve(spline, R, J, u, DENS, damp, max_count=3, tol=1e-3):
 
             # Update the quantities of time integration, and double the Delta_T
             timeInt.advance()
-            updateDt(2)
+            timeInt.updateDt(2)
             i += 1
 
         except:
