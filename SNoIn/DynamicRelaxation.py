@@ -6,7 +6,7 @@ for nonlinear problems with large deformation.
 """
 
 from dolfin import *
-from tIGAr.timeIntegration import *
+from SNoIn.timeIntegration import BackwardEulerIntegrator
 
 def DynamicRelaxationSolve(spline, R, J, u, DENS, damp, max_count=3, tol=1e-3):
     """
