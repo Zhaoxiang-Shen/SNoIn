@@ -8,7 +8,6 @@ for nonlinear problems with large deformation.
 from dolfin import *
 from tIGAr.timeIntegration import *
 
-# spline.setSolverOptions(maxIters=10,relativeTolerance=1e-5,linearSolver=PETScLUSolver("mumps"))
 def DynamicRelaxationSolve(spline, R, J, u, DENS, damp, max_count=3, tol=1e-3):
     """
     Solves the nonlinear problem using Dynamic Relaxation. "timeInt" is the
@@ -25,6 +24,10 @@ def DynamicRelaxationSolve(spline, R, J, u, DENS, damp, max_count=3, tol=1e-3):
     DELTA_T = Constant(1)
     timeInt = BackwardEulerIntegrator(DELTA_T, u,
                                       (u_old, udot_old))
+    # Update DELTA_T
+    def updateDt(ratio):
+        timeInt.DELTA_T.assign(timeInt.DELTA_T * ratio)
+        timeInt.DELTA_T_reciprocal.assign(1 / (timeInt.DELTA_T * ratio))
 
     # Inertial contribution to the residual:
     z_hom = TestFunction(spline.V)
@@ -56,7 +59,7 @@ def DynamicRelaxationSolve(spline, R, J, u, DENS, damp, max_count=3, tol=1e-3):
 
             # Update the quantities of time integration, and double the Delta_T
             timeInt.advance()
-            timeInt.updateDt(2)
+            updateDt(2)
             i += 1
 
         except:
