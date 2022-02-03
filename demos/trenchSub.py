@@ -92,7 +92,7 @@ energy_E = surfaceEnergyDensitySVK(spline,X,x,E,nu,h_th)*spline.dx
 
 # LJ potential with analytical I (semi-infinite with no hole):
 _, _, a2, _, _, _ = surfaceGeometry(spline, x)  # a2 is the normal vector of shell
-d_Mo, n_a2 = d_tangent_plane(spline_sub, U_sub, x[2], y[0], y[1], shift_sub, a2)
+d_Mo, n_a2 = d_tangent_plane(spline_sub, U_sub, x[2], y[0], y[1], a2)
 energy_LJ = I_MoS2_Si3N4(d_Mo, n_a2) * spline.dx
 
 # Total energy:
