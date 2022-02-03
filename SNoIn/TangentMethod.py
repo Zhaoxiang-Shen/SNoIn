@@ -13,11 +13,10 @@ def unit(v):
     """
     return v/sqrt(inner(v,v))
 
-def d_tangent_plane(spline_sub, u_sub, y_shell, ux_shell, uz_shell, shift_sub, a2):
+def d_tangent_plane(spline_sub, u_sub, y_shell, ux_shell, uz_shell, a2):
     """
     "u_sub" is the displacement field of the substrate surface,
     "y_shell" is in the current configuration, "ux/uz_shell" is the displacement,
-    "shift_sub" is the downward shift of the substrate,
     "a2" is the normal vector at "x".
     """
     # vector
@@ -31,5 +30,5 @@ def d_tangent_plane(spline_sub, u_sub, y_shell, ux_shell, uz_shell, shift_sub, a
     # shift coefficient for S atoms
     n_a2 = inner(unit(n_u_sub), a2)
     # distance
-    d_Mo = (y_shell - (u_sub + ux * ux_shell + uz * uz_shell - shift_sub)) * cos_theta
+    d_Mo = (y_shell - (u_sub + ux * ux_shell + uz * uz_shell)) * cos_theta
     return d_Mo, sqrt(n_a2**2)
