@@ -5,7 +5,7 @@ The library was written to support the following paper submitted to JMPS:
 ```
 @article{Shell-HoleySub,
 title = "Atomistically-informed continuum modeling and isogeometric analysis of 2D materials over holey substrates",
-author = "Moon-ki Choic and Marco Pasettoa and Zhaoxiang Shenb and Ellad B. Tadmor and David Kamenskya"
+author = "Moon-ki Choi and Marco Pasetto and Zhaoxiang Shen and Ellad B. Tadmor and David Kamenskya"
 }
 ```
 
