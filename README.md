@@ -1,11 +1,11 @@
 # SNoIn
 A collection of Python modules for developing programs of **S**hell **No**nlocal **In**teraction with holey substrates (pronounced "snowing"). This library relies on [ShNaPr](https://github.com/david-kamensky/ShNAPr), [tIGAr](https://github.com/david-kamensky/tIGAr), and their associated dependencies, chiefly [FEniCS](https://fenicsproject.org/).
 
-The library was written to support the following paper submitted to JMPS:
+The library was written to support the following paper submitted to arXiv and JMPS:
 ```
 @article{Shell-HoleySub,
 title = "Atomistically-informed continuum modeling and isogeometric analysis of 2D materials over holey substrates",
-author = "Moon-ki Choi and Marco Pasetto and Zhaoxiang Shen and Ellad B. Tadmor and David Kamenskya"
+author = "Moon-ki Choi and Marco Pasetto and Zhaoxiang Shen and Ellad B. Tadmor and David Kamensky"
 }
 ```
 
